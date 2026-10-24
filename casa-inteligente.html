@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casa Inteligente · SENAI Horizontina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#004A8D;--azul-esc:#003A70;--azul-hover:#0A5EAD;--verm:#E30613;--fundo:#F4F7FA;--texto:#1B2A3A;--sec:#6B7C8F;--borda:#DDE5EE;--t:200ms}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}
+header{background:linear-gradient(135deg,var(--azul-esc),var(--azul));color:#fff;border-bottom:4px solid var(--verm);padding:18px 20px}
+.hd{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-size:1.5rem;font-weight:700}
+header p{font-size:.85rem;opacity:.8}
+.status{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);padding:6px 14px;border-radius:99px;font-size:.85rem;font-weight:500}
+.dot{width:10px;height:10px;border-radius:50%;background:#F5A623;animation:pulse 1.2s infinite}
+.status.ok .dot{background:#2ECC71;animation:none}
+.status.err .dot{background:#FF4D58;animation:none}
+@keyframes pulse{50%{opacity:.3;transform:scale(1.3)}}
+main{max-width:1100px;margin:auto;padding:20px}
+.app.off .controls{opacity:.45;pointer-events:none}
+.top{display:flex;justify-content:flex-end;margin-bottom:8px}
+.btn-all{background:var(--verm);color:#fff;border:0;border-radius:10px;padding:11px 20px;font:600 .9rem Inter,sans-serif;cursor:pointer;transition:background var(--t)}
+.btn-all:hover{background:#B8050F}
+section h2{font-size:1.05rem;color:var(--azul);margin:26px 0 12px;padding-left:10px;border-left:4px solid var(--azul)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:#fff;border:1px solid var(--borda);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,58,112,.07);display:flex;flex-direction:column;gap:10px;transition:border-color var(--t),box-shadow var(--t)}
+.card.on{border-color:var(--azul);box-shadow:0 4px 16px rgba(0,74,141,.18)}
+.card.on.red{border-color:var(--verm)}
+.row{display:flex;align-items:center;gap:12px}
+.ico{font-size:1.6rem;width:46px;height:46px;border-radius:12px;background:var(--fundo);display:grid;place-items:center;transition:background var(--t)}
+.card.on .ico{background:var(--azul);filter:none}
+.card.on.red .ico{background:var(--verm)}
+.nm{font-weight:600;font-size:.95rem}
+.st{font-size:.8rem;color:var(--sec)}
+.card.on .st{color:var(--azul);font-weight:600}
+.card.on.red .st{color:var(--verm)}
+.top-t{margin-left:auto}
+.tp{font-size:.68rem;color:var(--sec);opacity:.85;word-break:break-all;margin-top:auto}
+.sw{position:relative;width:48px;height:28px;flex:none}
+.sw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.sw span{position:absolute;inset:0;background:#C5D0DC;border-radius:99px;transition:background var(--t)}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform var(--t);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw input:checked+span{background:var(--azul)}
+.sw input:checked+span::after{transform:translateX(20px)}
+.sw input:focus-visible+span,.dual button:focus-visible,.btn-all:focus-visible,input[type=range]:focus-visible{outline:3px solid #0A5EAD;outline-offset:2px}
+.sl{display:flex;align-items:center;gap:10px}
+.sl output{min-width:52px;text-align:right;font-weight:600;color:var(--azul)}
+input[type=range]{flex:1;accent-color:var(--azul);height:28px}
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dual button{border:1px solid var(--borda);background:var(--fundo);color:var(--texto);border-radius:10px;padding:9px 6px;font:500 .82rem Inter,sans-serif;cursor:pointer;transition:all var(--t)}
+.dual button:hover{border-color:var(--azul-hover)}
+.dual button.act{background:var(--azul);border-color:var(--azul);color:#fff}
+.dual button.act.red{background:var(--verm);border-color:var(--verm)}
+@media(max-width:520px){.grid{grid-template-columns:1fr}h1{font-size:1.25rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app off" id="app">
+  <header><div class="hd">
+    <div><h1>Casa Inteligente</h1><p>SENAI Horizontina</p></div>
+    <div class="status" id="status" role="status" aria-live="polite"><span class="dot"></span><span id="statusTxt">Conectando...</span></div>
+  </div></header>
+  <main>
+    <div class="controls">
+      <div class="top"><button class="btn-all" id="btnAll" aria-label="Desligar tudo">⏻ Desligar tudo</button></div>
+      <div id="rooms"></div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.4/mqtt.min.js"></script>
+<script>
+/* ========== CONFIGURAÇÃO ========== */
+const BASE = 'senaihorizontina/';
+const MQTT_URL = 'wss://w8767ca9.ala.us-east-1.emqxsl.com:8084/mqtt';
+
+/* Tipos: toggle (ON/OFF) | slider (min, max, unit, ini) | dual (opcoes [a,b], ini, red = opção vermelha) */
+const DEVICES = [
+  {env:'Sala', nome:'Luz', ico:'💡', topic:'sala/luz', tipo:'toggle'},
+  {env:'Sala', nome:'Ventilador', ico:'🌀', topic:'sala/ventilador', tipo:'toggle'},
+  {env:'Sala', nome:'Ar-condicionado', ico:'❄️', topic:'sala/ar/temperatura', tipo:'slider', min:16, max:30, unit:'°C', ini:24},
+  {env:'Sala', nome:'TV', ico:'📺', topic:'sala/tv', tipo:'toggle'},
+  {env:'Sala', nome:'Cortinas', ico:'🪟', topic:'cortinas/sala', tipo:'dual', opcoes:['ABRIR','FECHAR'], ini:'FECHAR'},
+  {env:'Quarto', nome:'Luz', ico:'🛏️', topic:'quarto/luz', tipo:'toggle'},
+  {env:'Quarto', nome:'Brilho da luz', ico:'🔆', topic:'quarto/luz/brilho', tipo:'slider', min:0, max:100, unit:'%', ini:50},
+  {env:'Quarto', nome:'Ar-condicionado', ico:'❄️', topic:'quarto/ar/temperatura', tipo:'slider', min:16, max:30, unit:'°C', ini:24},
+  {env:'Cozinha', nome:'Luz', ico:'💡', topic:'cozinha/luz', tipo:'toggle'},
+  {env:'Cozinha', nome:'Exaustor', ico:'🍳', topic:'cozinha/exaustor', tipo:'toggle'},
+  {env:'Garagem', nome:'Portão', ico:'🚗', topic:'garagem/portao', tipo:'dual', opcoes:['ABRIR','FECHAR'], ini:'FECHAR'},
+  {env:'Garagem', nome:'Luz', ico:'💡', topic:'garagem/luz', tipo:'toggle'},
+  {env:'Jardim', nome:'Irrigação', ico:'💧', topic:'jardim/irrigacao', tipo:'toggle'},
+  {env:'Jardim', nome:'Luz', ico:'🌳', topic:'jardim/luz', tipo:'toggle'},
+  {env:'Segurança', nome:'Alarme', ico:'🚨', topic:'seguranca/alarme', tipo:'dual', opcoes:['ARMAR','DESARMAR'], ini:'DESARMAR', red:'ARMAR'},
+  {env:'Segurança', nome:'Fechadura', ico:'🔒', topic:'seguranca/fechadura', tipo:'dual', opcoes:['TRAVAR','DESTRAVAR'], ini:'TRAVAR'}
+];
+/* Estado "desligado" aplicado por "Desligar tudo" nos botões duplos */
+const OFF_DUAL = {'garagem/portao':'FECHAR','cortinas/sala':'FECHAR','seguranca/fechadura':'TRAVAR'};
+
+/* ========== ESTADO ========== */
+const estado = {};   // topic -> valor atual
+const ui = {};       // topic -> função que atualiza o card
+DEVICES.forEach(d => estado[d.topic] = d.tipo==='toggle' ? 'OFF' : d.tipo==='slider' ? d.ini : d.ini);
+
+/* ========== MQTT ========== */
+const rand = Array.from({length:8}, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');
+const client = mqtt.connect(MQTT_URL, {
+  clientId:'senai_'+rand, username:'RICARDO', password:'senai',
+  clean:true, reconnectPeriod:3000, connectTimeout:10000, keepalive:60
+});
+const elApp = document.getElementById('app'), elSt = document.getElementById('status'), elTxt = document.getElementById('statusTxt');
+function setStatus(cls, txt, on){ elSt.className='status '+cls; elTxt.textContent=txt; elApp.classList.toggle('off', !on); }
+client.on('connect', () => setStatus('ok','Conectado',true));
+client.on('reconnect', () => setStatus('','Conectando...',false));
+client.on('close', () => setStatus('err','Desconectado',false));
+client.on('offline', () => setStatus('err','Desconectado',false));
+client.on('error', () => setStatus('err','Desconectado',false));
+
+/* Função única de publicação (QoS 0, retain) */
+function publicar(topico, mensagem){
+  if(!client.connected) return;
+  client.publish(BASE+topico, String(mensagem), {qos:0, retain:true});
+}
+
+/* ========== RENDERIZAÇÃO ========== */
+const el = (tag, cls, html) => { const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; };
+
+function criarCard(d){
+  const card = el('div','card');
+  const nm = el('div'); nm.append(el('div','nm',d.nome), el('div','st'));
+  const head = el('div','row'); head.append(el('div','ico',d.ico), nm);
+  const st = nm.querySelector('.st');
+  card.append(head);
+  const tp = el('div','tp', BASE+d.topic);
+
+  if(d.tipo==='toggle'){
+    const lab = el('label','sw top-t'); lab.setAttribute('aria-label', d.nome+' – '+d.env);
+    const cb = el('input'); cb.type='checkbox';
+    lab.append(cb, el('span'));
+    head.append(lab);
+    cb.addEventListener('change', () => { estado[d.topic]=cb.checked?'ON':'OFF'; ui[d.topic](); publicar(d.topic, estado[d.topic]); });
+    ui[d.topic] = () => { const on = estado[d.topic]==='ON'; cb.checked=on; card.classList.toggle('on',on); st.textContent=on?'Ligado':'Desligado'; };
+  }
+
+  if(d.tipo==='slider'){
+    const sl = el('div','sl'); const r = el('input'); const out = el('output');
+    Object.assign(r,{type:'range',min:d.min,max:d.max,step:1}); r.setAttribute('aria-label', d.nome+' – '+d.env);
+    sl.append(r,out); card.append(sl);
+    let timer;
+    r.addEventListener('input', () => {
+      estado[d.topic]=+r.value; ui[d.topic]();
+      clearTimeout(timer); timer=setTimeout(() => publicar(d.topic, r.value), 200); // debounce
+    });
+    ui[d.topic] = () => { r.value=estado[d.topic]; out.textContent=estado[d.topic]+d.unit; st.textContent=estado[d.topic]+d.unit; card.classList.add('on'); };
+  }
+
+  if(d.tipo==='dual'){
+    const box = el('div','dual'); const btns = {};
+    d.opcoes.forEach(o => {
+      const b = el('button',null,o.charAt(0)+o.slice(1).toLowerCase()); b.type='button';
+      b.setAttribute('aria-label', d.nome+': '+o.toLowerCase());
+      b.addEventListener('click', () => { estado[d.topic]=o; ui[d.topic](); publicar(d.topic,o); });
+      btns[o]=b; box.append(b);
+    });
+    card.append(box);
+    ui[d.topic] = () => {
+      const cur = estado[d.topic], ativo = cur===d.opcoes[0];
+      d.opcoes.forEach(o => { btns[o].classList.toggle('act',o===cur); btns[o].classList.toggle('red', o===cur && o===d.red); });
+      st.textContent = cur.charAt(0)+cur.slice(1).toLowerCase().replace(/r$/,'r')
+        .replace(/^Abrir$/,'Aberto').replace(/^Fechar$/,'Fechado').replace(/^Armar$/,'Armado')
+        .replace(/^Desarmar$/,'Desarmado').replace(/^Travar$/,'Travada').replace(/^Destravar$/,'Destravada');
+      card.classList.toggle('on', cur===d.opcoes[0]);
+      card.classList.toggle('red', cur===d.red);
+    };
+  }
+
+  card.append(tp);
+  ui[d.topic]();
+  return card;
+}
+
+/* Agrupa por ambiente e monta as seções */
+function renderizar(){
+  const rooms = document.getElementById('rooms');
+  [...new Set(DEVICES.map(d=>d.env))].forEach(env => {
+    const sec = el('section'); sec.append(el('h2',null,env));
+    const grid = el('div','grid');
+    DEVICES.filter(d=>d.env===env).forEach(d => grid.append(criarCard(d)));
+    sec.append(grid); rooms.append(sec);
+  });
+}
+renderizar();
+
+/* Desligar tudo: publica e atualiza todos os cards */
+document.getElementById('btnAll').addEventListener('click', () => {
+  publicar('geral/tudo','OFF');
+  DEVICES.forEach(d => {
+    if(d.tipo==='toggle') estado[d.topic]='OFF';
+    else if(d.tipo==='dual' && OFF_DUAL[d.topic]) estado[d.topic]=OFF_DUAL[d.topic];
+    else return;
+    ui[d.topic]();
+  });
+});
+</script>
+</body>
+</html>
