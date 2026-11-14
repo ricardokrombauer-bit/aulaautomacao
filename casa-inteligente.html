@@ -1,210 +1,149 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Casa Inteligente · SENAI Horizontina</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>As 5 Feridas Emocionais</title>
 <style>
-:root{--azul:#004A8D;--azul-esc:#003A70;--azul-hover:#0A5EAD;--verm:#E30613;--fundo:#F4F7FA;--texto:#1B2A3A;--sec:#6B7C8F;--borda:#DDE5EE;--t:200ms}
-*{box-sizing:border-box;margin:0}
-body{font-family:Inter,system-ui,sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}
-header{background:linear-gradient(135deg,var(--azul-esc),var(--azul));color:#fff;border-bottom:4px solid var(--verm);padding:18px 20px}
-.hd{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-size:1.5rem;font-weight:700}
-header p{font-size:.85rem;opacity:.8}
-.status{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);padding:6px 14px;border-radius:99px;font-size:.85rem;font-weight:500}
-.dot{width:10px;height:10px;border-radius:50%;background:#F5A623;animation:pulse 1.2s infinite}
-.status.ok .dot{background:#2ECC71;animation:none}
-.status.err .dot{background:#FF4D58;animation:none}
-@keyframes pulse{50%{opacity:.3;transform:scale(1.3)}}
-main{max-width:1100px;margin:auto;padding:20px}
-.app.off .controls{opacity:.45;pointer-events:none}
-.top{display:flex;justify-content:flex-end;margin-bottom:8px}
-.btn-all{background:var(--verm);color:#fff;border:0;border-radius:10px;padding:11px 20px;font:600 .9rem Inter,sans-serif;cursor:pointer;transition:background var(--t)}
-.btn-all:hover{background:#B8050F}
-section h2{font-size:1.05rem;color:var(--azul);margin:26px 0 12px;padding-left:10px;border-left:4px solid var(--azul)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.card{background:#fff;border:1px solid var(--borda);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,58,112,.07);display:flex;flex-direction:column;gap:10px;transition:border-color var(--t),box-shadow var(--t)}
-.card.on{border-color:var(--azul);box-shadow:0 4px 16px rgba(0,74,141,.18)}
-.card.on.red{border-color:var(--verm)}
-.row{display:flex;align-items:center;gap:12px}
-.ico{font-size:1.6rem;width:46px;height:46px;border-radius:12px;background:var(--fundo);display:grid;place-items:center;transition:background var(--t)}
-.card.on .ico{background:var(--azul);filter:none}
-.card.on.red .ico{background:var(--verm)}
-.nm{font-weight:600;font-size:.95rem}
-.st{font-size:.8rem;color:var(--sec)}
-.card.on .st{color:var(--azul);font-weight:600}
-.card.on.red .st{color:var(--verm)}
-.top-t{margin-left:auto}
-.tp{font-size:.68rem;color:var(--sec);opacity:.85;word-break:break-all;margin-top:auto}
-.sw{position:relative;width:48px;height:28px;flex:none}
-.sw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
-.sw span{position:absolute;inset:0;background:#C5D0DC;border-radius:99px;transition:background var(--t)}
-.sw span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform var(--t);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.sw input:checked+span{background:var(--azul)}
-.sw input:checked+span::after{transform:translateX(20px)}
-.sw input:focus-visible+span,.dual button:focus-visible,.btn-all:focus-visible,input[type=range]:focus-visible{outline:3px solid #0A5EAD;outline-offset:2px}
-.sl{display:flex;align-items:center;gap:10px}
-.sl output{min-width:52px;text-align:right;font-weight:600;color:var(--azul)}
-input[type=range]{flex:1;accent-color:var(--azul);height:28px}
-.dual{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.dual button{border:1px solid var(--borda);background:var(--fundo);color:var(--texto);border-radius:10px;padding:9px 6px;font:500 .82rem Inter,sans-serif;cursor:pointer;transition:all var(--t)}
-.dual button:hover{border-color:var(--azul-hover)}
-.dual button.act{background:var(--azul);border-color:var(--azul);color:#fff}
-.dual button.act.red{background:var(--verm);border-color:var(--verm)}
-@media(max-width:520px){.grid{grid-template-columns:1fr}h1{font-size:1.25rem}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#1f3a3d;--soft:#5b7073;--acc:#b8893c;--terra:#b8664a;--line:#e3d9c6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 20px 60px}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(2rem,6vw,2.8rem)}h2{font-size:1.5rem}h3{font-size:1.15rem;color:var(--terra)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
+.screen{display:none;animation:in .5s ease}.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-size:.75rem;font-weight:600}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:14px 26px;font:600 1rem inherit;font-family:inherit;cursor:pointer;margin:4px;transition:.2s}
+.btn:hover{background:var(--terra);color:#fff}
+.ghost{background:none;border:0;color:var(--soft);cursor:pointer;font:inherit;font-size:.9rem}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin:10px 0 24px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--terra));transition:width .4s}
+.q{font:1.3rem/1.45 Georgia,serif;min-height:7.5em;margin:0 0 18px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font:500 1rem inherit;font-family:inherit;cursor:pointer;transition:.2s}
+.opt b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--acc);flex:none}
+.opt:hover,.opt.sel{border-color:var(--acc);background:var(--bg);transform:translateX(4px)}
+.pulse{width:70px;height:70px;border-radius:50%;margin:20px auto;background:radial-gradient(var(--acc),var(--terra));animation:p 1.2s infinite ease-in-out}
+@keyframes p{50%{transform:scale(1.25);opacity:.6}}
+.center{text-align:center}
+.row{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:.95rem}.row span:first-child{width:100px;flex:none}
+.row .bar{flex:1;margin:0;height:10px}.row .bar i{width:var(--w);transition:none}
+.tag{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:999px;padding:2px 12px;font-size:.8rem;margin-bottom:10px}
+blockquote{margin:16px 0 0;padding:14px 18px;border-left:3px solid var(--acc);background:var(--bg);border-radius:0 12px 12px 0;font-family:Georgia,serif;font-style:italic}
+li{margin:.5em 0}small{color:var(--soft)}
+@media print{body{background:#fff}.noprint,#s0,#s1,#s2{display:none!important}.card{box-shadow:none;break-inside:avoid}}
 </style>
 </head>
 <body>
-<div class="app off" id="app">
-  <header><div class="hd">
-    <div><h1>Casa Inteligente</h1><p>SENAI Horizontina</p></div>
-    <div class="status" id="status" role="status" aria-live="polite"><span class="dot"></span><span id="statusTxt">Conectando...</span></div>
-  </div></header>
-  <main>
-    <div class="controls">
-      <div class="top"><button class="btn-all" id="btnAll" aria-label="Desligar tudo">⏻ Desligar tudo</button></div>
-      <div id="rooms"></div>
-    </div>
-  </main>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.4/mqtt.min.js"></script>
+<main>
+<section id="s0" class="screen on card center">
+ <div class="eyebrow">Baseado na obra de Lise Bourbeau</div>
+ <h1>As 5 Feridas Emocionais</h1>
+ <p>Desde a infância, criamos máscaras para nos proteger da dor de ser rejeitado, abandonado, humilhado, traído ou tratado com injustiça. Elas agem em silêncio e moldam nossas reações e relações sem que percebamos.</p>
+ <p>Responda 40 afirmações com o coração, não com a razão. Não há certo ou errado — apenas verdade.</p>
+ <button class="btn" onclick="start()">Iniciar Minha Jornada de Autoconhecimento</button>
+ <p><small>Nenhuma informação será registrada.</small></p>
+</section>
+<section id="s1" class="screen card">
+ <div style="display:flex;justify-content:space-between"><small id="cnt"></small><button class="ghost" id="back" onclick="back()">← Voltar</button></div>
+ <div class="bar"><i id="pb"></i></div>
+ <p class="q" id="qt"></p>
+ <div class="opts" id="opts"></div>
+</section>
+<section id="s2" class="screen card center"><div class="pulse"></div><h2 id="proc">Mapeando padrões inconscientes...</h2></section>
+<section id="s3" class="screen"></section>
+</main>
 <script>
-/* ========== CONFIGURAÇÃO ========== */
-const BASE = 'senaihorizontina/';
-const MQTT_URL = 'wss://w8767ca9.ala.us-east-1.emqxsl.com:8084/mqtt';
-
-/* Tipos: toggle (ON/OFF) | slider (min, max, unit, ini) | dual (opcoes [a,b], ini, red = opção vermelha) */
-const DEVICES = [
-  {env:'Sala', nome:'Luz', ico:'💡', topic:'sala/luz', tipo:'toggle'},
-  {env:'Sala', nome:'Ventilador', ico:'🌀', topic:'sala/ventilador', tipo:'toggle'},
-  {env:'Sala', nome:'Ar-condicionado', ico:'❄️', topic:'sala/ar/temperatura', tipo:'slider', min:16, max:30, unit:'°C', ini:24},
-  {env:'Sala', nome:'TV', ico:'📺', topic:'sala/tv', tipo:'toggle'},
-  {env:'Sala', nome:'Cortinas', ico:'🪟', topic:'cortinas/sala', tipo:'dual', opcoes:['ABRIR','FECHAR'], ini:'FECHAR'},
-  {env:'Quarto', nome:'Luz', ico:'🛏️', topic:'quarto/luz', tipo:'toggle'},
-  {env:'Quarto', nome:'Brilho da luz', ico:'🔆', topic:'quarto/luz/brilho', tipo:'slider', min:0, max:100, unit:'%', ini:50},
-  {env:'Quarto', nome:'Ar-condicionado', ico:'❄️', topic:'quarto/ar/temperatura', tipo:'slider', min:16, max:30, unit:'°C', ini:24},
-  {env:'Cozinha', nome:'Luz', ico:'💡', topic:'cozinha/luz', tipo:'toggle'},
-  {env:'Cozinha', nome:'Exaustor', ico:'🍳', topic:'cozinha/exaustor', tipo:'toggle'},
-  {env:'Garagem', nome:'Portão', ico:'🚗', topic:'garagem/portao', tipo:'dual', opcoes:['ABRIR','FECHAR'], ini:'FECHAR'},
-  {env:'Garagem', nome:'Luz', ico:'💡', topic:'garagem/luz', tipo:'toggle'},
-  {env:'Jardim', nome:'Irrigação', ico:'💧', topic:'jardim/irrigacao', tipo:'toggle'},
-  {env:'Jardim', nome:'Luz', ico:'🌳', topic:'jardim/luz', tipo:'toggle'},
-  {env:'Segurança', nome:'Alarme', ico:'🚨', topic:'seguranca/alarme', tipo:'dual', opcoes:['ARMAR','DESARMAR'], ini:'DESARMAR', red:'ARMAR'},
-  {env:'Segurança', nome:'Fechadura', ico:'🔒', topic:'seguranca/fechadura', tipo:'dual', opcoes:['TRAVAR','DESTRAVAR'], ini:'TRAVAR'}
-];
-/* Estado "desligado" aplicado por "Desligar tudo" nos botões duplos */
-const OFF_DUAL = {'garagem/portao':'FECHAR','cortinas/sala':'FECHAR','seguranca/fechadura':'TRAVAR'};
-
-/* ========== ESTADO ========== */
-const estado = {};   // topic -> valor atual
-const ui = {};       // topic -> função que atualiza o card
-DEVICES.forEach(d => estado[d.topic] = d.tipo==='toggle' ? 'OFF' : d.tipo==='slider' ? d.ini : d.ini);
-
-/* ========== MQTT ========== */
-const rand = Array.from({length:8}, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)]).join('');
-const client = mqtt.connect(MQTT_URL, {
-  clientId:'senai_'+rand, username:'RICARDO', password:'senai',
-  clean:true, reconnectPeriod:3000, connectTimeout:10000, keepalive:60
-});
-const elApp = document.getElementById('app'), elSt = document.getElementById('status'), elTxt = document.getElementById('statusTxt');
-function setStatus(cls, txt, on){ elSt.className='status '+cls; elTxt.textContent=txt; elApp.classList.toggle('off', !on); }
-client.on('connect', () => setStatus('ok','Conectado',true));
-client.on('reconnect', () => setStatus('','Conectando...',false));
-client.on('close', () => setStatus('err','Desconectado',false));
-client.on('offline', () => setStatus('err','Desconectado',false));
-client.on('error', () => setStatus('err','Desconectado',false));
-
-/* Função única de publicação (QoS 0, retain) */
-function publicar(topico, mensagem){
-  if(!client.connected) return;
-  client.publish(BASE+topico, String(mensagem), {qos:0, retain:true});
-}
-
-/* ========== RENDERIZAÇÃO ========== */
-const el = (tag, cls, html) => { const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; };
-
-function criarCard(d){
-  const card = el('div','card');
-  const nm = el('div'); nm.append(el('div','nm',d.nome), el('div','st'));
-  const head = el('div','row'); head.append(el('div','ico',d.ico), nm);
-  const st = nm.querySelector('.st');
-  card.append(head);
-  const tp = el('div','tp', BASE+d.topic);
-
-  if(d.tipo==='toggle'){
-    const lab = el('label','sw top-t'); lab.setAttribute('aria-label', d.nome+' – '+d.env);
-    const cb = el('input'); cb.type='checkbox';
-    lab.append(cb, el('span'));
-    head.append(lab);
-    cb.addEventListener('change', () => { estado[d.topic]=cb.checked?'ON':'OFF'; ui[d.topic](); publicar(d.topic, estado[d.topic]); });
-    ui[d.topic] = () => { const on = estado[d.topic]==='ON'; cb.checked=on; card.classList.toggle('on',on); st.textContent=on?'Ligado':'Desligado'; };
-  }
-
-  if(d.tipo==='slider'){
-    const sl = el('div','sl'); const r = el('input'); const out = el('output');
-    Object.assign(r,{type:'range',min:d.min,max:d.max,step:1}); r.setAttribute('aria-label', d.nome+' – '+d.env);
-    sl.append(r,out); card.append(sl);
-    let timer;
-    r.addEventListener('input', () => {
-      estado[d.topic]=+r.value; ui[d.topic]();
-      clearTimeout(timer); timer=setTimeout(() => publicar(d.topic, r.value), 200); // debounce
-    });
-    ui[d.topic] = () => { r.value=estado[d.topic]; out.textContent=estado[d.topic]+d.unit; st.textContent=estado[d.topic]+d.unit; card.classList.add('on'); };
-  }
-
-  if(d.tipo==='dual'){
-    const box = el('div','dual'); const btns = {};
-    d.opcoes.forEach(o => {
-      const b = el('button',null,o.charAt(0)+o.slice(1).toLowerCase()); b.type='button';
-      b.setAttribute('aria-label', d.nome+': '+o.toLowerCase());
-      b.addEventListener('click', () => { estado[d.topic]=o; ui[d.topic](); publicar(d.topic,o); });
-      btns[o]=b; box.append(b);
-    });
-    card.append(box);
-    ui[d.topic] = () => {
-      const cur = estado[d.topic], ativo = cur===d.opcoes[0];
-      d.opcoes.forEach(o => { btns[o].classList.toggle('act',o===cur); btns[o].classList.toggle('red', o===cur && o===d.red); });
-      st.textContent = cur.charAt(0)+cur.slice(1).toLowerCase().replace(/r$/,'r')
-        .replace(/^Abrir$/,'Aberto').replace(/^Fechar$/,'Fechado').replace(/^Armar$/,'Armado')
-        .replace(/^Desarmar$/,'Desarmado').replace(/^Travar$/,'Travada').replace(/^Destravar$/,'Destravada');
-      card.classList.toggle('on', cur===d.opcoes[0]);
-      card.classList.toggle('red', cur===d.red);
-    };
-  }
-
-  card.append(tp);
-  ui[d.topic]();
-  return card;
-}
-
-/* Agrupa por ambiente e monta as seções */
-function renderizar(){
-  const rooms = document.getElementById('rooms');
-  [...new Set(DEVICES.map(d=>d.env))].forEach(env => {
-    const sec = el('section'); sec.append(el('h2',null,env));
-    const grid = el('div','grid');
-    DEVICES.filter(d=>d.env===env).forEach(d => grid.append(criarCard(d)));
-    sec.append(grid); rooms.append(sec);
-  });
-}
-renderizar();
-
-/* Desligar tudo: publica e atualiza todos os cards */
-document.getElementById('btnAll').addEventListener('click', () => {
-  publicar('geral/tudo','OFF');
-  DEVICES.forEach(d => {
-    if(d.tipo==='toggle') estado[d.topic]='OFF';
-    else if(d.tipo==='dual' && OFF_DUAL[d.topic]) estado[d.topic]=OFF_DUAL[d.topic];
-    else return;
-    ui[d.topic]();
-  });
-});
+const Q=[
+["Quando percebo que fui excluído(a) de um grupo, plano ou conversa, minha reação imediata é me distanciar e sumir para não ser um peso.","rejeicao"],
+["Sinto uma necessidade quase incontrolável de checar onde os outros estão ou o que estão fazendo para me sentir seguro(a).","traicao"],
+["Tenho pavor de ser visto(a) como alguém incompetente, tolo(a) ou que cometeu um erro grosseiro em público.","humilhacao"],
+["Sinto-me profundamente desconfortável quando as regras não são seguidas à risca ou quando vejo algo que considero injusto.","injustica"],
+["A simples ideia de ficar sozinho(a) ou de ser abandonado(a) por alguém importante me gera uma ansiedade física no peito.","abandono"],
+["Frequentemente assumo responsabilidades, culpa ou tarefas que pertencem aos outros para evitar conflitos ou manter a harmonia.","humilhacao"],
+["Prefiro fazer tudo sozinho(a) e do meu jeito, pois confio desconfiando da capacidade dos outros de entregarem algo perfeito.","traicao"],
+["Tenho muita dificuldade em dizer “não” aos pedidos dos outros, mesmo quando estou exausto(a) ou sem tempo.","abandono"],
+["Em ambientes sociais, sinto-me frequentemente como um “fantasma” ou alguém invisível que ocupa espaço desnecessariamente.","rejeicao"],
+["Sou extremamente rígido(a) e exigente comigo mesmo(a), cobrando-me um padrão de perfeição inalcançável.","injustica"],
+["Quando estou em um relacionamento ou projeto, preciso de atenção constante e validação de que sou importante para o outro.","abandono"],
+["Guardo rancor por muito tempo quando sinto que alguém quebrou uma promessa ou mentiu para mim.","traicao"],
+["No fundo, acredito que minhas opiniões, desejos e sentimentos importam muito pouco para as pessoas ao meu redor.","rejeicao"],
+["Tenho muita dificuldade em demonstrar afeto, chorar ou parecer vulnerável na frente dos outros para não parecer fraco(a).","injustica"],
+["Muitas vezes me privo de coisas boas, prazeres ou conforto, como se, no fundo, eu não merecesse ser feliz.","humilhacao"],
+["Tenho o hábito de antecipar o término de relacionamentos ou me afastar antes que a outra pessoa decida me deixar.","rejeicao"],
+["Sinto uma necessidade visceral de estar no controle de todas as situações e detalhes ao meu redor.","traicao"],
+["Quando recebo um elogio, sinto um desconforto enorme ou acho que a pessoa está apenas sendo educada ou com pena.","humilhacao"],
+["Sinto uma irritação profunda quando vejo pessoas sendo displicentes, preguiçosas ou fazendo um trabalho mal feito.","injustica"],
+["Costumo adotar uma postura de “vítima” ou carente para atrair o cuidado e a presença de outras pessoas.","abandono"],
+["Sinto-me um “peixe fora d’água” na maioria dos lugares, como se eu não pertencesse a este mundo.","rejeicao"],
+["Sou uma pessoa extremamente desconfiada; é preciso muito tempo para que eu consiga confiar plenamente em alguém.","traicao"],
+["Muitas vezes me sinto sujo(a), inadequado(a) ou com vergonha do meu próprio corpo ou dos meus desejos.","humilhacao"],
+["Tenho pavor de errar, pois vejo o erro como um fracasso inadmissível da minha competência.","injustica"],
+["Quando alguém se afasta temporariamente ou demora a responder uma mensagem, imagino logo que fui substituído(a) ou esquecido(a).","abandono"],
+["Mesmo quando estou esgotado(a), continuo trabalhando ou me esforçando ao máximo para provar meu valor através da perfeição.","injustica"],
+["Sinto uma vergonha enorme de expor minhas vulnerabilidades ou de ser o centro das atenções de forma negativa.","humilhacao"],
+["Tenho facilidade em romper relações abruptamente ao menor sinal de que fui traído(a) ou enganado(a).","traicao"],
+["Costumo sabotar meus próprios projetos ou relacionamentos porque, inconscientemente, sinto que não tenho direito ao sucesso ou à alegria.","rejeicao"],
+["A minha estabilidade emocional depende quase inteiramente da presença e da aprovação das pessoas que amo.","abandono"],
+["Detesto delegar tarefas porque sinto que os outros vão estragar o processo ou não seguir o padrão correto.","traicao"],
+["Sinto uma culpa desproporcional quando me priorizo ou quando digo “não” a alguém que pediu ajuda.","humilhacao"],
+["Bloqueio meus sentimentos e “fecho o coração” sempre que percebo que posso perder o controle da situação.","injustica"],
+["Quando me sinto rejeitado(a) ou ignorado(a), prefiro me isolar no meu mundinho e silenciar para sempre.","rejeicao"],
+["Sinto um vazio profundo e uma sensação de desamparo sempre que percebo que preciso lidar com a vida sozinho(a).","abandono"],
+["Sinto necessidade de supervisionar tudo o que os outros fazem para garantir que não serei pego(a) de surpresa por falhas alheias.","traicao"],
+["Reajo mal a críticas, encarando-as não como um feedback, mas como um ataque pessoal à minha honra ou competência.","injustica"],
+["Muitas vezes me coloco em situações onde acabo assumindo o papel de “bode expiatório” ou de quem sai perdendo.","humilhacao"],
+["Tenho reações de fuga mental ou física muito rápidas quando um ambiente ou conversa se torna emocionalmente intenso demais.","rejeicao"],
+["Sou implacável com os meus próprios erros e costumo me punir mentalmente por muito tempo quando falho.","injustica"]];
+const L=["Nunca / Raramente","Às vezes","Frequentemente","Quase sempre","Sempre / Absolutamente"];
+const W={
+rejeicao:{n:"Rejeição",m:"O Fugitivo",c:"a crença de que você não tem lugar no mundo e de que sua presença é dispensável, o que o(a) leva a sumir, calar-se e se isolar",
+ p:["Diga uma opinião em voz alta todos os dias, mesmo pequena.","Quando quiser sumir, avise alguém de confiança: “preciso de um tempo, mas volto”.","Escreva três desejos seus e dê um passo em direção a um deles."],a:"Eu existo, tenho valor e meu lugar no mundo é legítimo."},
+abandono:{n:"Abandono",m:"O Dependente",c:"o medo da solidão e do vazio afetivo, que leva a buscar atenção constante, validação e a tolerar mais do que deveria",
+ p:["Crie momentos diários de solitude gentil: um chá, uma caminhada, sem celular.","Treine pequenos “nãos” e observe que o vínculo sobrevive.","Cultive uma rede variada de apoio, sem depender de uma única pessoa."],a:"Eu sou minha própria companhia e posso receber amor sem me perder."},
+humilhacao:{n:"Humilhação",m:"O Masoquista",c:"a vergonha e a culpa de ser quem é, que levam a se sacrificar, cuidar demais dos outros e se privar de prazer",
+ p:["Faça uma pequena escolha só para si por dia e sustente a culpa sem recuar.","Antes de dizer “sim”, pergunte: “isso é meu para carregar?”.","Receba elogios apenas com um “obrigado(a)”."],a:"Eu mereço prazer, liberdade e respeito exatamente como sou."},
+traicao:{n:"Traição",m:"O Controlador",c:"a desconfiança defensiva e a necessidade de controle, para nunca ser pego(a) de surpresa nem depender de ninguém",
+ p:["Delegue algo pequeno e aceite que será feito de outro jeito.","Cumpra seus próprios compromissos: a confiança começa dentro.","Comunique o que sente em vez de vigiar ou investigar."],a:"Eu confio em mim e permito que a vida me surpreenda com segurança."},
+injustica:{n:"Injustiça",m:"O Rígido",c:"a busca por perfeição para merecer amor, com exigência extrema consigo, dificuldade de sentir e coração blindado",
+ p:["Defina o “bom o bastante” em uma tarefa e pare ali, de propósito.","Nomeie uma emoção por dia, sem julgá-la.","Fale consigo como falaria com alguém querido que errou."],a:"Eu sou valioso(a) mesmo imperfeito(a) e posso sentir sem perder o controle."}};
+const C={
+"injustica|humilhacao":"Essa combinação forma um ciclo interno muito pesado: você exige perfeição absoluta de si mesmo (Injustiça), mas carrega uma culpa profunda e um medo enorme de falhar ou decepcionar os outros (Humilhação). Você tende a assumir responsabilidades demais, carregando fardos alheios para garantir que tudo saia impecável. O custo disso é a exaustão física e mental, cobrando-se em um nível desumano e punindo-se severamente ao menor erro.",
+"abandono|rejeicao":"Você carrega uma profunda angústia com a solidão e uma tendência constante a antecipar o afastamento das pessoas. O Abandono faz com que sua estabilidade emocional dependa da presença e validação alheia, enquanto a Rejeição te faz querer sumir ou se isolar preventivamente para não ser “um peso”. Isso cria um dilema interno exaustivo entre implorar por atenção e fugir por medo de ser rejeitado.",
+"traicao|injustica":"Sua armadura principal é o controle absoluto e a desconfiança defensiva. A Traição faz com que você prefira fazer tudo sozinho e do seu jeito para evitar surpresas desagradáveis, somada à Injustiça que não tolera displicência ou erros alheios. Você centraliza tarefas, guarda rancor de promessas quebradas e tem enorme dificuldade em delegar, pois sente que ninguém entregará o padrão correto.",
+"rejeicao|abandono":"Você vive na defensiva contra a invisibilidade e o desamparo. A Rejeição te convence de que você não tem direito de ocupar espaço, fazendo você se sentir um “fantasma” em ambientes sociais, enquanto o Abandono gera pânico de ficar sozinho. O resultado é a tendência a se afastar antes de ser deixado, sabotando laços por acreditar inconscientemente que não merece ser escolhido.",
+"humilhacao|abandono":"Você tem pavor de ser visto como incompetente ou inadequado, o que te leva a assumir o papel de “cuidador” ou mártir nas relações. A Humilhação faz com que você coloque as necessidades dos outros acima das suas e aceite situações desgastantes, aterrorizado(a) pela ideia de que, se disser “não”, será abandonado(a) ou deixará de ter utilidade."};
+function analise(p,s){
+ return C[p+"|"+s]||`Sua ferida primária, ${W[p].n}, traz ${W[p].c}. Sua ferida secundária, ${W[s].n}, soma ${W[s].c}. Juntas, elas se alimentam: a máscara ${W[p].m} protege você da primeira dor, mas muitas vezes aciona a máscara ${W[s].m} quando a situação aperta, criando reações que parecem contraditórias. Reconhecer esse ciclo é o primeiro passo para escolher conscientemente como reagir.`}
+let S,i,lock;const $=id=>document.getElementById(id);
+function show(n){document.querySelectorAll('.screen').forEach((e,k)=>e.classList.toggle('on',k==n));scrollTo(0,0)}
+function start(){S=Q.map(()=>0);i=0;show(1);render()}
+function render(){
+ $('cnt').textContent=`Pergunta ${i+1} de 40`;$('pb').style.width=(i/40*100)+'%';
+ $('qt').textContent=Q[i][0];$('back').style.visibility=i?'visible':'hidden';
+ $('opts').innerHTML=L.map((t,k)=>`<button class="opt${S[i]==k+1?' sel':''}" onclick="ans(${k+1})"><b>${k+1}</b>${t}</button>`).join('');lock=false}
+function ans(v){if(lock)return;lock=true;S[i]=v;document.querySelectorAll('.opt')[v-1].classList.add('sel');
+ setTimeout(()=>{if(i<39){i++;render()}else{$('pb').style.width='100%';process()}},250)}
+function back(){if(i>0){i--;render()}}
+function process(){show(2);$('proc').textContent="Mapeando padrões inconscientes...";
+ setTimeout(()=>$('proc').textContent="Mapeando suas máscaras de proteção...",1000);setTimeout(result,2000)}
+function result(){
+ const t={rejeicao:0,abandono:0,humilhacao:0,traicao:0,injustica:0};Q.forEach((q,k)=>t[q[1]]+=S[k]);
+ const rk=Object.keys(t).sort((x,y)=>t[y]-t[x]),p=rk[0],s=rk[1],P=W[p];
+ $('s3').innerHTML=`
+ <div class="card center"><div class="eyebrow">Seu Despertar</div><h1>Sua ferida primária: ${P.n}</h1>
+  <span class="tag">Máscara: ${P.m}</span><p>Ferida secundária: <b>${W[s].n}</b> (${W[s].m})</p></div>
+ <div class="card"><h2>Seu mapa emocional</h2>
+  ${rk.map(k=>`<div class="row"><span>${W[k].n}</span><div class="bar"><i style="--w:${(t[k]/40*100)}%"></i></div><span style="width:56px;text-align:right">${t[k]}/40</span></div>`).join('')}</div>
+ <div class="card"><h2>O efeito espelho</h2><p>${analise(p,s)}</p></div>
+ <div class="card"><h2>Seu plano prático de cura</h2><ol>${P.p.map(x=>`<li>${x}</li>`).join('')}</ol>
+  <blockquote>Afirmação diária: ${P.a}</blockquote></div>
+ <div class="card center"><p><small>Ferramenta de reflexão, não um diagnóstico clínico. Se sentir muito sofrimento, procure um(a) psicólogo(a).</small></p>
+  <div class="noprint"><button class="btn" onclick="window.print()">Imprimir / Salvar relatório</button><button class="btn" onclick="start()">Refazer o teste</button></div></div>`;
+ show(3)}
+document.addEventListener('keydown',e=>{if($('s1').classList.contains('on')&&e.key>=1&&e.key<=5)ans(+e.key)});
 </script>
 </body>
 </html>
