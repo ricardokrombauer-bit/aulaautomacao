@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Efeito Sombra — Autoavaliação</title>
+<style>
+  :root{
+    --bg: #14141b;
+    --bg-panel: #1c1c26;
+    --line: #322f3a;
+    --ink: #ece7e0;
+    --ink-dim: #9d97a6;
+    --gold: #c99a4a;
+    --gold-dim: #8a6d3a;
+    --ok: #6f9c7a;
+    --warn: #c99a4a;
+    --danger: #b5654f;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,154,74,0.09), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201,154,74,0.05), transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 24px 120px;
+  }
+
+  header.hero {
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(34px, 6vw, 50px);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .lede {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  /* progress */
+  .progress-rail {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(20,20,27,0.88);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 24px;
+    margin: 0 -24px 40px;
+  }
+  .progress-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: var(--line);
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .progress-count {
+    font-size: 12px;
+    color: var(--ink-dim);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* questions */
+  .question {
+    border-bottom: 1px solid var(--line);
+    padding: 30px 0;
+  }
+  .question:first-of-type { padding-top: 0; }
+
+  .q-num {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--gold-dim);
+    margin: 0 0 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .q-text {
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0 0 20px;
+    color: var(--ink);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--bg-panel);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover {
+    border-color: var(--gold-dim);
+  }
+  .option input {
+    accent-color: var(--gold);
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .option.selected {
+    border-color: var(--gold);
+    background: rgba(201,154,74,0.08);
+  }
+  .option-label {
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .option-letter {
+    color: var(--gold);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  /* submit */
+  .submit-zone {
+    margin-top: 48px;
+    text-align: center;
+  }
+  .btn {
+    appearance: none;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: #14141b;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 15px 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: transform 0.12s ease, background 0.15s ease;
+  }
+  .btn:hover { background: #dcae63; }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled {
+    background: transparent;
+    color: var(--ink-dim);
+    border-color: var(--line);
+    cursor: not-allowed;
+  }
+  .hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
+
+  /* report */
+  #report {
+    display: none;
+  }
+  #report.visible { display: block; }
+
+  .report-panel {
+    border: 1px solid var(--gold-dim);
+    background: var(--bg-panel);
+    border-radius: 14px;
+    padding: 40px 32px;
+    margin-top: 8px;
+  }
+
+  .score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+  .score-num {
+    font-family: var(--serif);
+    font-size: 64px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .score-max {
+    font-size: 15px;
+    color: var(--ink-dim);
+  }
+
+  .zone-badge {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin: 10px 0 24px;
+  }
+  .zone-neutral { background: rgba(111,156,122,0.15); color: var(--ok); border: 1px solid rgba(111,156,122,0.4); }
+  .zone-mid { background: rgba(201,154,74,0.15); color: var(--warn); border: 1px solid rgba(201,154,74,0.4); }
+  .zone-high { background: rgba(181,101,79,0.15); color: var(--danger); border: 1px solid rgba(181,101,79,0.4); }
+
+  .report-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .report-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-ghost {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--gold-dim); color: var(--ink); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 32px 16px 100px; }
+    .score-num { font-size: 48px; }
+    .report-panel { padding: 28px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-count" id="progressCount">0 / 20</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Autoavaliação</p>
+    <h1>O Efeito <em>Sombra</em></h1>
+    <p class="lede">Responda às 20 perguntas abaixo com sinceridade. Ao final, sua pontuação é calculada automaticamente e o relatório correspondente aparece na tela.</p>
+  </header>
+
+  <form id="quizForm">
+    <div id="questionsContainer"></div>
+
+    <div class="submit-zone">
+      <button type="submit" class="btn" id="submitBtn" disabled>Calcular meu resultado</button>
+      <p class="hint" id="hintText">Responda todas as 20 perguntas para liberar o resultado.</p>
+    </div>
+  </form>
+
+  <section id="report" aria-live="polite">
+    <div class="report-panel">
+      <div class="score-row">
+        <span class="score-num" id="scoreNum">0</span>
+        <span class="score-max">de até 160 pontos</span>
+      </div>
+      <span class="zone-badge" id="zoneBadge">—</span>
+      <p class="report-text" id="reportText"></p>
+      <div class="report-actions">
+        <button type="button" class="btn-ghost" id="retakeBtn">Refazer o teste</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Fonte: O Efeito Sombra, 2010.</footer>
+</div>
+
+<script>
+(function () {
+  var LETTERS = ['a', 'b', 'c', 'd'];
+
+  var QUESTIONS = [
+    {
+      text: "Há quanto tempo você vem trabalhando os mesmos assuntos, seja na carreira, na saúde, nos relacionamentos pessoais ou nas finanças?",
+      options: ["menos de 12 meses", "um a três anos", "mais de cinco anos", "mais de dez anos"]
+    },
+    {
+      text: "Nos últimos doze meses, quantas vezes você guardou algo importante no lugar errado, recebeu uma multa de trânsito, teve um acidente ou destruiu algo de valor?",
+      options: ["nenhuma", "uma ou duas", "mais de cinco vezes", "mais de dez vezes"]
+    },
+    {
+      text: "Com que frequência você se sente falso, inautêntico, ou acha que precisa de muito esforço para que as pessoas o vejam de determinada maneira?",
+      options: ["o tempo todo", "ocasionalmente", "quase nunca", "nunca"]
+    },
+    {
+      text: "Se seus amigos, colegas de trabalho e familiares fossem entrevistados, eles diriam que você reclama...",
+      options: ["raramente ou nunca", "talvez uma vez por dia", "frequentemente", "o tempo todo"]
+    },
+    {
+      text: "Nos últimos doze meses, quantas vezes você disse ou fez algo de que se arrependeu depois, seja imediatamente ou com o passar do tempo?",
+      options: ["nenhuma", "uma ou duas vezes", "mais de cinco vezes", "mais de dez vezes"]
+    },
+    {
+      text: "Depois de uma realização pessoal — alcançar o peso desejado, pagar as contas do cartão de crédito, organizar a casa ou o escritório, etc. — qual das emoções abaixo você é mais inclinado a seguir?",
+      options: [
+        "aliviado por ter conseguido, mas cauteloso para não voltar aos antigos comportamentos",
+        "orgulhoso, no direito de receber um prêmio por todo o seu trabalho duro!",
+        "inspirado por seu sucesso e comprometido a continuar o bom trabalho",
+        "ressentido por precisar trabalhar tanto"
+      ]
+    },
+    {
+      text: "Com que frequência você percebe que está se sentindo inadequado, indigno, insuficientemente bom ou não amado?",
+      options: ["o tempo todo", "ocasionalmente", "quase nunca", "nunca"]
+    },
+    {
+      text: "Numa escala de um a dez, qual é a sua disposição de falar a verdade, mesmo quando ela vai de encontro à opinião dos outros?",
+      options: [
+        "8 a 10 — Sou muito disposto a falar a verdade",
+        "5 a 7 — Na maioria do tempo estou disposto a falar a verdade",
+        "3 a 5 — Ocasionalmente estou disposto a falar a verdade",
+        "1 a 2 — Quase nunca estou disposto a falar a verdade"
+      ]
+    },
+    {
+      text: "Qual é o foco primário de sua vida nesse momento?",
+      options: [
+        "avançar na carreira, melhorar a saúde, construir riqueza ou aprofundar relacionamentos",
+        "administrar relacionamentos desgastados ou “apagar incêndios” no trabalho ou em casa",
+        "fazer um progresso mensurável na direção de seus objetivos, ao longo de um período razoável",
+        "tentar desviar ou evitar o desastre imediato nas finanças, nos relacionamentos ou na carreira"
+      ]
+    },
+    {
+      text: "Com que porcentagem de seu tempo você pode dizer que honra sua palavra e suas promessas — seja a si mesmo, seja aos outros?",
+      options: ["menos de 10%", "menos de 25%", "aproximadamente metade do tempo", "a maior parte do tempo"]
+    },
+    {
+      text: "Quanto tempo você gasta diariamente com fofoca — seja sobre alguém que você conhece, lendo tabloides ou assistindo a programa de fofoca na televisão?",
+      options: ["tempo algum", "menos de uma hora por dia", "mais de uma hora por dia", "mais de três horas por dia"]
+    },
+    {
+      text: "Qual das afirmações abaixo você usaria para descrever sua vida?",
+      options: [
+        "na maior parte do tempo, as coisas funcionam para mim com certa facilidade",
+        "eu tenho muitos talentos e dons, mas não os utilizo em todo o seu potencial",
+        "sou perseguido pelo azar e me vejo em uma situação ruim após a outra",
+        "preciso trabalhar duro só para manter a média"
+      ]
+    },
+    {
+      text: "Quantas horas por dia você passa trabalhando para atingir seus objetivos de longo prazo?",
+      options: ["nenhuma", "menos de vinte minutos por dia", "uma hora ou mais por dia", "você não tem objetivos de longo prazo"]
+    },
+    {
+      text: "Com que frequência você se sente maltratado, incompreendido, ou como se alguém tirasse proveito de você — tanto na vida pessoal quanto profissional?",
+      options: ["todo dia", "frequentemente", "ocasionalmente", "raramente ou nunca"]
+    },
+    {
+      text: "Quando lhe pedem que faça algo que você não tem interesse em fazer, você fica mais inclinado a:",
+      options: [
+        "dizer não, de consciência tranquila",
+        "dizer não, mas se sentir culpado por isso",
+        "dizer sim, mas não cumprir",
+        "dizer sim, mas se ressentir por isso"
+      ]
+    },
+    {
+      text: "Imagine que sua vida é uma casa com muitos cômodos — de alguns você gosta, de outros tem vergonha. Quantas pessoas você permite ver todos os seus cômodos?",
+      options: [
+        "ninguém",
+        "uma pessoa significativa — cônjuge, amante, melhor amigo ou irmão, etc.",
+        "um pequeno punhado de pessoas me conhece tão bem assim",
+        "há muita gente em minha vida que me conhece tão bem assim"
+      ]
+    },
+    {
+      text: "Quando você se sente magoado por alguém ou por algo, o que tende a fazer?",
+      options: [
+        "guarda para você",
+        "reflete, perdoa e segue em frente",
+        "confronta a situação",
+        "fala a respeito com todos, menos com a pessoa envolvida"
+      ]
+    },
+    {
+      text: "Quando você tem um impulso ou uma ideia de como melhorar algum aspecto de sua vida, o que você faz?",
+      options: [
+        "ignora completamente",
+        "dá alguns passos na direção certa, mas raramente vê o projeto chegar à linha final",
+        "diz a si mesmo que “um dia desses eu faço”",
+        "cria uma estrutura de apoio ao redor de si mesmo, para garantir que entre em ação"
+      ]
+    },
+    {
+      text: "Na última vez em que você se viu, inesperadamente, com tempo livre, o que fez?",
+      options: [
+        "desperdiçou, fazendo compras em catálogos, vendo TV ou navegando na internet",
+        "usou a oportunidade para seguir adiante em um projeto importante",
+        "relaxou e se rejuvenesceu, tirando um cochilo, meditando ou lendo",
+        "sua vida é tão caótica que você nem consegue se lembrar de quando teve um tempo livre inesperado"
+      ]
+    },
+    {
+      text: "Quando você comete um erro, o que é mais provável que faça?",
+      options: [
+        "é gentil consigo mesmo e resolve fazer as coisas de forma diferente no futuro",
+        "coloca as coisas em perspectiva, reconhecendo a si mesmo pelo que fez certo",
+        "cai na autocrítica",
+        "interpreta seu erro como evidência de que você é incompetente e para de tentar"
+      ]
+    }
+  ];
+
+  // pontuação oficial, na ordem a/b/c/d de cada pergunta
+  var SCORING = [
+    [1, 3, 5, 8],
+    [1, 3, 5, 8],
+    [5, 3, 1, 0],
+    [0, 1, 3, 5],
+    [0, 1, 3, 5],
+    [0, 5, 0, 3],
+    [5, 3, 1, 0],
+    [0, 1, 3, 5],
+    [0, 3, 0, 5],
+    [8, 5, 3, 1],
+    [0, 3, 5, 8],
+    [0, 3, 5, 3],
+    [5, 3, 0, 5],
+    [5, 3, 1, 0],
+    [0, 3, 3, 5],
+    [5, 3, 1, 0],
+    [5, 0, 1, 5],
+    [5, 3, 3, 0],
+    [5, 0, 0, 3],
+    [0, 0, 5, 5]
+  ];
+
+  var container = document.getElementById('questionsContainer');
+  var answers = new Array(QUESTIONS.length).fill(null);
+
+  QUESTIONS.forEach(function (q, qi) {
+    var block = document.createElement('div');
+    block.className = 'question';
+
+    var num = document.createElement('p');
+    num.className = 'q-num';
+    num.textContent = 'PERGUNTA ' + (qi + 1) + ' DE ' + QUESTIONS.length;
+    block.appendChild(num);
+
+    var text = document.createElement('p');
+    text.className = 'q-text';
+    text.textContent = q.text;
+    block.appendChild(text);
+
+    var opts = document.createElement('div');
+    opts.className = 'options';
+
+    q.options.forEach(function (optText, oi) {
+      var label = document.createElement('label');
+      label.className = 'option';
+
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'q' + qi;
+      input.value = oi;
+      input.className = 'visually-hidden-input';
+      input.addEventListener('change', function () {
+        answers[qi] = oi;
+        Array.prototype.forEach.call(opts.querySelectorAll('.option'), function (el) {
+          el.classList.remove('selected');
+        });
+        label.classList.add('selected');
+        updateProgress();
+      });
+
+      var span = document.createElement('span');
+      span.className = 'option-label';
+      var letterSpan = document.createElement('span');
+      letterSpan.className = 'option-letter';
+      letterSpan.textContent = LETTERS[oi].toUpperCase() + '.';
+      span.appendChild(letterSpan);
+      span.appendChild(document.createTextNode(optText));
+
+      label.appendChild(input);
+      label.appendChild(span);
+      opts.appendChild(label);
+    });
+
+    block.appendChild(opts);
+    container.appendChild(block);
+  });
+
+  var progressFill = document.getElementById('progressFill');
+  var progressCount = document.getElementById('progressCount');
+  var submitBtn = document.getElementById('submitBtn');
+  var hintText = document.getElementById('hintText');
+
+  function updateProgress() {
+    var answered = answers.filter(function (a) { return a !== null; }).length;
+    var pct = (answered / QUESTIONS.length) * 100;
+    progressFill.style.width = pct + '%';
+    progressCount.textContent = answered + ' / ' + QUESTIONS.length;
+
+    if (answered === QUESTIONS.length) {
+      submitBtn.disabled = false;
+      hintText.textContent = 'Tudo pronto. Toque em "Calcular meu resultado".';
+    } else {
+      submitBtn.disabled = true;
+      hintText.textContent = 'Responda todas as ' + QUESTIONS.length + ' perguntas para liberar o resultado.';
+    }
+  }
+
+  var form = document.getElementById('quizForm');
+  var report = document.getElementById('report');
+  var scoreNum = document.getElementById('scoreNum');
+  var zoneBadge = document.getElementById('zoneBadge');
+  var reportText = document.getElementById('reportText');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (answers.some(function (a) { return a === null; })) return;
+
+    var total = 0;
+    answers.forEach(function (choiceIndex, qi) {
+      total += SCORING[qi][choiceIndex];
+    });
+
+    scoreNum.textContent = total;
+
+    var zoneClass, zoneLabel, text;
+    if (total <= 37) {
+      zoneClass = 'zone-neutral';
+      zoneLabel = 'Zona neutra';
+      text = 'Você está numa zona neutra, o que significa que está livre (por ora) de muitas crenças e ferimentos internos que dão origem aos comportamentos destrutivos causados por sua sombra. Você possui uma elevada autoestima, suas ações estão alinhadas com seus valores e você provavelmente está realizando um progresso em direção aos seus objetivos de longo prazo. Continue amando e ouvindo a si mesmo.';
+    } else if (total <= 75) {
+      zoneClass = 'zone-mid';
+      zoneLabel = 'Sombra em ação';
+      text = 'Talvez você não esteja vivenciando totalmente o peso e o impacto da sombra nesse momento, mas, provavelmente, está empregando muito esforço para reprimir e esconder partes de si mesmo e de sua vida das quais não gosta. A energia que está usando para impedir que as coisas fujam ao controle — seja no trabalho, em casa, ou em relação à saúde e ao bem-estar — estaria mais bem empregada se fosse direcionada à obtenção de seus objetivos e desejos.';
+    } else {
+      zoneClass = 'zone-high';
+      zoneLabel = 'Sombra profunda';
+      text = 'Ou você gasta muito tempo e energia tentando administrar a opinião alheia a seu respeito, ou está profundamente resignado quanto às condições de sua vida. Isso é a sombra trabalhando, e ela paralisa você na tomada de decisão e ações corretivas. Se for deixada à revelia, o caos interno que está vivenciando pode levá-lo ao caminho do desastre. No entanto, a boa notícia é que cada ato de autossabotagem apresenta uma oportunidade de despertá-lo para o que é verdadeiramente importante. Abra seu coração, examine a sombra, e você começará a ver como a sua dor mais profunda, quando digerida e compreendida, é moldada para levá-lo ao seu destino maior.';
+    }
+
+    zoneBadge.className = 'zone-badge ' + zoneClass;
+    zoneBadge.textContent = zoneLabel;
+    reportText.textContent = text;
+
+    report.classList.add('visible');
+    form.style.display = 'none';
+    document.querySelector('.progress-rail').style.display = 'none';
+    report.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('retakeBtn').addEventListener('click', function () {
+    answers = new Array(QUESTIONS.length).fill(null);
+    Array.prototype.forEach.call(form.querySelectorAll('input[type="radio"]'), function (input) {
+      input.checked = false;
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('.option.selected'), function (el) {
+      el.classList.remove('selected');
+    });
+    updateProgress();
+    report.classList.remove('visible');
+    form.style.display = '';
+    document.querySelector('.progress-rail').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
