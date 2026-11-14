@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>As 5 Feridas Emocionais</title>
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#1f3a3d;--soft:#5b7073;--acc:#b8893c;--terra:#b8664a;--line:#e3d9c6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 20px 60px}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(2rem,6vw,2.8rem)}h2{font-size:1.5rem}h3{font-size:1.15rem;color:var(--terra)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
+.screen{display:none;animation:in .5s ease}.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-size:.75rem;font-weight:600}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:14px 26px;font:600 1rem inherit;font-family:inherit;cursor:pointer;margin:4px;transition:.2s}
+.btn:hover{background:var(--terra);color:#fff}
+.ghost{background:none;border:0;color:var(--soft);cursor:pointer;font:inherit;font-size:.9rem}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin:10px 0 24px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--terra));transition:width .4s}
+.q{font:1.3rem/1.45 Georgia,serif;min-height:7.5em;margin:0 0 18px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font:500 1rem inherit;font-family:inherit;cursor:pointer;transition:.2s}
+.opt b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--acc);flex:none}
+.opt:hover,.opt.sel{border-color:var(--acc);background:var(--bg);transform:translateX(4px)}
+.pulse{width:70px;height:70px;border-radius:50%;margin:20px auto;background:radial-gradient(var(--acc),var(--terra));animation:p 1.2s infinite ease-in-out}
+@keyframes p{50%{transform:scale(1.25);opacity:.6}}
+.center{text-align:center}
+.row{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:.95rem}.row span:first-child{width:100px;flex:none}
+.row .bar{flex:1;margin:0;height:10px}.row .bar i{width:var(--w);transition:none}
+.tag{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:999px;padding:2px 12px;font-size:.8rem;margin-bottom:10px}
+blockquote{margin:16px 0 0;padding:14px 18px;border-left:3px solid var(--acc);background:var(--bg);border-radius:0 12px 12px 0;font-family:Georgia,serif;font-style:italic}
+li{margin:.5em 0}small{color:var(--soft)}
+@media print{body{background:#fff}.noprint,#s0,#s1,#s2{display:none!important}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<section id="s0" class="screen on card center">
+ <div class="eyebrow">Baseado na obra de Lise Bourbeau</div>
+ <h1>As 5 Feridas Emocionais</h1>
+ <p>Desde a infância, criamos máscaras para nos proteger da dor de ser rejeitado, abandonado, humilhado, traído ou tratado com injustiça. Elas agem em silêncio e moldam nossas reações e relações sem que percebamos.</p>
+ <p>Responda 40 afirmações com o coração, não com a razão. Não há certo ou errado — apenas verdade.</p>
+ <button class="btn" onclick="start()">Iniciar Minha Jornada de Autoconhecimento</button>
+ <p><small>Nenhuma informação será registrada.</small></p>
+</section>
+<section id="s1" class="screen card">
+ <div style="display:flex;justify-content:space-between"><small id="cnt"></small><button class="ghost" id="back" onclick="back()">← Voltar</button></div>
+ <div class="bar"><i id="pb"></i></div>
+ <p class="q" id="qt"></p>
+ <div class="opts" id="opts"></div>
+</section>
+<section id="s2" class="screen card center"><div class="pulse"></div><h2 id="proc">Mapeando padrões inconscientes...</h2></section>
+<section id="s3" class="screen"></section>
+</main>
+<script>
+const Q=[
+["Quando percebo que fui excluído(a) de um grupo, plano ou conversa, minha reação imediata é me distanciar e sumir para não ser um peso.","rejeicao"],
+["Sinto uma necessidade quase incontrolável de checar onde os outros estão ou o que estão fazendo para me sentir seguro(a).","traicao"],
+["Tenho pavor de ser visto(a) como alguém incompetente, tolo(a) ou que cometeu um erro grosseiro em público.","humilhacao"],
+["Sinto-me profundamente desconfortável quando as regras não são seguidas à risca ou quando vejo algo que considero injusto.","injustica"],
+["A simples ideia de ficar sozinho(a) ou de ser abandonado(a) por alguém importante me gera uma ansiedade física no peito.","abandono"],
+["Frequentemente assumo responsabilidades, culpa ou tarefas que pertencem aos outros para evitar conflitos ou manter a harmonia.","humilhacao"],
+["Prefiro fazer tudo sozinho(a) e do meu jeito, pois confio desconfiando da capacidade dos outros de entregarem algo perfeito.","traicao"],
+["Tenho muita dificuldade em dizer “não” aos pedidos dos outros, mesmo quando estou exausto(a) ou sem tempo.","abandono"],
+["Em ambientes sociais, sinto-me frequentemente como um “fantasma” ou alguém invisível que ocupa espaço desnecessariamente.","rejeicao"],
+["Sou extremamente rígido(a) e exigente comigo mesmo(a), cobrando-me um padrão de perfeição inalcançável.","injustica"],
+["Quando estou em um relacionamento ou projeto, preciso de atenção constante e validação de que sou importante para o outro.","abandono"],
+["Guardo rancor por muito tempo quando sinto que alguém quebrou uma promessa ou mentiu para mim.","traicao"],
+["No fundo, acredito que minhas opiniões, desejos e sentimentos importam muito pouco para as pessoas ao meu redor.","rejeicao"],
+["Tenho muita dificuldade em demonstrar afeto, chorar ou parecer vulnerável na frente dos outros para não parecer fraco(a).","injustica"],
+["Muitas vezes me privo de coisas boas, prazeres ou conforto, como se, no fundo, eu não merecesse ser feliz.","humilhacao"],
+["Tenho o hábito de antecipar o término de relacionamentos ou me afastar antes que a outra pessoa decida me deixar.","rejeicao"],
+["Sinto uma necessidade visceral de estar no controle de todas as situações e detalhes ao meu redor.","traicao"],
+["Quando recebo um elogio, sinto um desconforto enorme ou acho que a pessoa está apenas sendo educada ou com pena.","humilhacao"],
+["Sinto uma irritação profunda quando vejo pessoas sendo displicentes, preguiçosas ou fazendo um trabalho mal feito.","injustica"],
+["Costumo adotar uma postura de “vítima” ou carente para atrair o cuidado e a presença de outras pessoas.","abandono"],
+["Sinto-me um “peixe fora d’água” na maioria dos lugares, como se eu não pertencesse a este mundo.","rejeicao"],
+["Sou uma pessoa extremamente desconfiada; é preciso muito tempo para que eu consiga confiar plenamente em alguém.","traicao"],
+["Muitas vezes me sinto sujo(a), inadequado(a) ou com vergonha do meu próprio corpo ou dos meus desejos.","humilhacao"],
+["Tenho pavor de errar, pois vejo o erro como um fracasso inadmissível da minha competência.","injustica"],
+["Quando alguém se afasta temporariamente ou demora a responder uma mensagem, imagino logo que fui substituído(a) ou esquecido(a).","abandono"],
+["Mesmo quando estou esgotado(a), continuo trabalhando ou me esforçando ao máximo para provar meu valor através da perfeição.","injustica"],
+["Sinto uma vergonha enorme de expor minhas vulnerabilidades ou de ser o centro das atenções de forma negativa.","humilhacao"],
+["Tenho facilidade em romper relações abruptamente ao menor sinal de que fui traído(a) ou enganado(a).","traicao"],
+["Costumo sabotar meus próprios projetos ou relacionamentos porque, inconscientemente, sinto que não tenho direito ao sucesso ou à alegria.","rejeicao"],
+["A minha estabilidade emocional depende quase inteiramente da presença e da aprovação das pessoas que amo.","abandono"],
+["Detesto delegar tarefas porque sinto que os outros vão estragar o processo ou não seguir o padrão correto.","traicao"],
+["Sinto uma culpa desproporcional quando me priorizo ou quando digo “não” a alguém que pediu ajuda.","humilhacao"],
+["Bloqueio meus sentimentos e “fecho o coração” sempre que percebo que posso perder o controle da situação.","injustica"],
+["Quando me sinto rejeitado(a) ou ignorado(a), prefiro me isolar no meu mundinho e silenciar para sempre.","rejeicao"],
+["Sinto um vazio profundo e uma sensação de desamparo sempre que percebo que preciso lidar com a vida sozinho(a).","abandono"],
+["Sinto necessidade de supervisionar tudo o que os outros fazem para garantir que não serei pego(a) de surpresa por falhas alheias.","traicao"],
+["Reajo mal a críticas, encarando-as não como um feedback, mas como um ataque pessoal à minha honra ou competência.","injustica"],
+["Muitas vezes me coloco em situações onde acabo assumindo o papel de “bode expiatório” ou de quem sai perdendo.","humilhacao"],
+["Tenho reações de fuga mental ou física muito rápidas quando um ambiente ou conversa se torna emocionalmente intenso demais.","rejeicao"],
+["Sou implacável com os meus próprios erros e costumo me punir mentalmente por muito tempo quando falho.","injustica"]];
+const L=["Nunca / Raramente","Às vezes","Frequentemente","Quase sempre","Sempre / Absolutamente"];
+const W={
+rejeicao:{n:"Rejeição",m:"O Fugitivo",c:"a crença de que você não tem lugar no mundo e de que sua presença é dispensável, o que o(a) leva a sumir, calar-se e se isolar",
+ p:["Diga uma opinião em voz alta todos os dias, mesmo pequena.","Quando quiser sumir, avise alguém de confiança: “preciso de um tempo, mas volto”.","Escreva três desejos seus e dê um passo em direção a um deles."],a:"Eu existo, tenho valor e meu lugar no mundo é legítimo."},
+abandono:{n:"Abandono",m:"O Dependente",c:"o medo da solidão e do vazio afetivo, que leva a buscar atenção constante, validação e a tolerar mais do que deveria",
+ p:["Crie momentos diários de solitude gentil: um chá, uma caminhada, sem celular.","Treine pequenos “nãos” e observe que o vínculo sobrevive.","Cultive uma rede variada de apoio, sem depender de uma única pessoa."],a:"Eu sou minha própria companhia e posso receber amor sem me perder."},
+humilhacao:{n:"Humilhação",m:"O Masoquista",c:"a vergonha e a culpa de ser quem é, que levam a se sacrificar, cuidar demais dos outros e se privar de prazer",
+ p:["Faça uma pequena escolha só para si por dia e sustente a culpa sem recuar.","Antes de dizer “sim”, pergunte: “isso é meu para carregar?”.","Receba elogios apenas com um “obrigado(a)”."],a:"Eu mereço prazer, liberdade e respeito exatamente como sou."},
+traicao:{n:"Traição",m:"O Controlador",c:"a desconfiança defensiva e a necessidade de controle, para nunca ser pego(a) de surpresa nem depender de ninguém",
+ p:["Delegue algo pequeno e aceite que será feito de outro jeito.","Cumpra seus próprios compromissos: a confiança começa dentro.","Comunique o que sente em vez de vigiar ou investigar."],a:"Eu confio em mim e permito que a vida me surpreenda com segurança."},
+injustica:{n:"Injustiça",m:"O Rígido",c:"a busca por perfeição para merecer amor, com exigência extrema consigo, dificuldade de sentir e coração blindado",
+ p:["Defina o “bom o bastante” em uma tarefa e pare ali, de propósito.","Nomeie uma emoção por dia, sem julgá-la.","Fale consigo como falaria com alguém querido que errou."],a:"Eu sou valioso(a) mesmo imperfeito(a) e posso sentir sem perder o controle."}};
+const C={
+"injustica|humilhacao":"Essa combinação forma um ciclo interno muito pesado: você exige perfeição absoluta de si mesmo (Injustiça), mas carrega uma culpa profunda e um medo enorme de falhar ou decepcionar os outros (Humilhação). Você tende a assumir responsabilidades demais, carregando fardos alheios para garantir que tudo saia impecável. O custo disso é a exaustão física e mental, cobrando-se em um nível desumano e punindo-se severamente ao menor erro.",
+"abandono|rejeicao":"Você carrega uma profunda angústia com a solidão e uma tendência constante a antecipar o afastamento das pessoas. O Abandono faz com que sua estabilidade emocional dependa da presença e validação alheia, enquanto a Rejeição te faz querer sumir ou se isolar preventivamente para não ser “um peso”. Isso cria um dilema interno exaustivo entre implorar por atenção e fugir por medo de ser rejeitado.",
+"traicao|injustica":"Sua armadura principal é o controle absoluto e a desconfiança defensiva. A Traição faz com que você prefira fazer tudo sozinho e do seu jeito para evitar surpresas desagradáveis, somada à Injustiça que não tolera displicência ou erros alheios. Você centraliza tarefas, guarda rancor de promessas quebradas e tem enorme dificuldade em delegar, pois sente que ninguém entregará o padrão correto.",
+"rejeicao|abandono":"Você vive na defensiva contra a invisibilidade e o desamparo. A Rejeição te convence de que você não tem direito de ocupar espaço, fazendo você se sentir um “fantasma” em ambientes sociais, enquanto o Abandono gera pânico de ficar sozinho. O resultado é a tendência a se afastar antes de ser deixado, sabotando laços por acreditar inconscientemente que não merece ser escolhido.",
+"humilhacao|abandono":"Você tem pavor de ser visto como incompetente ou inadequado, o que te leva a assumir o papel de “cuidador” ou mártir nas relações. A Humilhação faz com que você coloque as necessidades dos outros acima das suas e aceite situações desgastantes, aterrorizado(a) pela ideia de que, se disser “não”, será abandonado(a) ou deixará de ter utilidade."};
+function analise(p,s){
+ return C[p+"|"+s]||`Sua ferida primária, ${W[p].n}, traz ${W[p].c}. Sua ferida secundária, ${W[s].n}, soma ${W[s].c}. Juntas, elas se alimentam: a máscara ${W[p].m} protege você da primeira dor, mas muitas vezes aciona a máscara ${W[s].m} quando a situação aperta, criando reações que parecem contraditórias. Reconhecer esse ciclo é o primeiro passo para escolher conscientemente como reagir.`}
+let S,i,lock;const $=id=>document.getElementById(id);
+function show(n){document.querySelectorAll('.screen').forEach((e,k)=>e.classList.toggle('on',k==n));scrollTo(0,0)}
+function start(){S=Q.map(()=>0);i=0;show(1);render()}
+function render(){
+ $('cnt').textContent=`Pergunta ${i+1} de 40`;$('pb').style.width=(i/40*100)+'%';
+ $('qt').textContent=Q[i][0];$('back').style.visibility=i?'visible':'hidden';
+ $('opts').innerHTML=L.map((t,k)=>`<button class="opt${S[i]==k+1?' sel':''}" onclick="ans(${k+1})"><b>${k+1}</b>${t}</button>`).join('');lock=false}
+function ans(v){if(lock)return;lock=true;S[i]=v;document.querySelectorAll('.opt')[v-1].classList.add('sel');
+ setTimeout(()=>{if(i<39){i++;render()}else{$('pb').style.width='100%';process()}},250)}
+function back(){if(i>0){i--;render()}}
+function process(){show(2);$('proc').textContent="Mapeando padrões inconscientes...";
+ setTimeout(()=>$('proc').textContent="Mapeando suas máscaras de proteção...",1000);setTimeout(result,2000)}
+function result(){
+ const t={rejeicao:0,abandono:0,humilhacao:0,traicao:0,injustica:0};Q.forEach((q,k)=>t[q[1]]+=S[k]);
+ const rk=Object.keys(t).sort((x,y)=>t[y]-t[x]),p=rk[0],s=rk[1],P=W[p];
+ $('s3').innerHTML=`
+ <div class="card center"><div class="eyebrow">Seu Despertar</div><h1>Sua ferida primária: ${P.n}</h1>
+  <span class="tag">Máscara: ${P.m}</span><p>Ferida secundária: <b>${W[s].n}</b> (${W[s].m})</p></div>
+ <div class="card"><h2>Seu mapa emocional</h2>
+  ${rk.map(k=>`<div class="row"><span>${W[k].n}</span><div class="bar"><i style="--w:${(t[k]/40*100)}%"></i></div><span style="width:56px;text-align:right">${t[k]}/40</span></div>`).join('')}</div>
+ <div class="card"><h2>O efeito espelho</h2><p>${analise(p,s)}</p></div>
+ <div class="card"><h2>Seu plano prático de cura</h2><ol>${P.p.map(x=>`<li>${x}</li>`).join('')}</ol>
+  <blockquote>Afirmação diária: ${P.a}</blockquote></div>
+ <div class="card center"><p><small>Ferramenta de reflexão, não um diagnóstico clínico. Se sentir muito sofrimento, procure um(a) psicólogo(a).</small></p>
+  <div class="noprint"><button class="btn" onclick="window.print()">Imprimir / Salvar relatório</button><button class="btn" onclick="start()">Refazer o teste</button></div></div>`;
+ show(3)}
+document.addEventListener('keydown',e=>{if($('s1').classList.contains('on')&&e.key>=1&&e.key<=5)ans(+e.key)});
+</script>
+</body>
+</html>
